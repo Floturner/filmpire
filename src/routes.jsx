@@ -1,11 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
-  Actors,
+  ActorsPage,
   ErrorPage,
   Layout,
-  MovieDetails,
-  Movies,
-  Profile,
+  MovieDetailsPage,
+  MoviesPage,
+  ProfilePage,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -16,19 +16,19 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Movies />,
+        element: <MoviesPage />,
       },
       {
         path: 'movies/:id',
-        element: <MovieDetails />,
+        element: <MovieDetailsPage />,
       },
       {
         path: 'actors/:id',
-        element: <Actors />,
+        element: <ActorsPage />,
       },
       {
         path: 'profile/:id',
-        element: <Profile />,
+        element: <ProfilePage />,
       },
     ],
   },

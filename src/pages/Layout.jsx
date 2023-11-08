@@ -1,20 +1,16 @@
-import { CssBaseline } from '@mui/material';
+import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import { NavBar } from '../components';
-import useStyles from '../styles';
+import { TheNav } from '../components';
 
 function Layout() {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <NavBar />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+    <Box sx={{ display: 'flex', height: '100%' }}>
+      <TheNav />
+      <Box component="main" sx={{ flexGrow: '1', padding: '2em' }}>
+        <Box sx={{ height: '70px' }} />
         <Outlet />
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

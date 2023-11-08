@@ -1,4 +1,3 @@
-import { CssBaseline } from '@mui/material';
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 function ErrorPage() {
@@ -6,7 +5,6 @@ function ErrorPage() {
 
   return (
     <div>
-      <CssBaseline />
       <h1>Oops</h1>
       <p>
         {isRouteErrorResponse(error)

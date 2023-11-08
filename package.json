@@ -15,9 +15,9 @@
     "@alan-ai/alan-sdk-web": "^1.8.54",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/poppins": "^5.0.8",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
-    "@mui/styles": "^5.14.17",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.0",
     "react": "^18.2.0",
@@ -43,12 +43,6 @@
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "vite": "^4.4.5"
-  },
-  "overrides": {
-    "@mui/styles": {
-      "react": ">=18.2.0",
-      "react-dom": ">=18.2.0"
-    }
   },
   "lint-staged": {
     "*.{js,jsx}": [
