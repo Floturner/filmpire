@@ -1,5 +1,5 @@
-function Actors() {
+function ActorsPage() {
   return <div>Actors</div>;
 }
 
-export default Actors;
+export default ActorsPage;

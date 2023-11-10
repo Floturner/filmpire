@@ -4,13 +4,15 @@ import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/700.css';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
-import router from './routes';
-import theme from './theme';
+import { router, store, theme } from './app';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <RouterProvider router={router} />
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  </Provider>
 );

@@ -1,5 +1,5 @@
-function MovieDetails() {
+function MovieDetailsPage() {
   return <div>MovieDetails</div>;
 }
 
-export default MovieDetails;
+export default MovieDetailsPage;

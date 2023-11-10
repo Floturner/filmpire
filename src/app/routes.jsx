@@ -6,7 +6,7 @@ import {
   MovieDetailsPage,
   MoviesPage,
   ProfilePage,
-} from './pages';
+} from '../pages';
 
 const router = createBrowserRouter([
   {

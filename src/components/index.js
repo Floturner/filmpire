@@ -1,3 +1,6 @@
-export { default as TheAppBar } from './TheAppBar';
-export { default as TheNav } from './TheNav';
-export { default as TheSideBar } from './TheSideBar';
+export { default as Movie } from './Movie';
+export { default as MovieList } from './MovieList';
+export { default as AppBar } from './NavBar/AppBar';
+export { default as NavBar } from './NavBar/NavBar';
+export { default as SideBar } from './NavBar/SideBar';
+export { default as Search } from './Search';
