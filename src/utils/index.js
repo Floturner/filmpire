@@ -54,3 +54,18 @@ export async function getUser(sessionId) {
     throw new Error('Session expired.');
   }
 }
+
+export function convertNumberToTime(num) {
+  const hours = Math.floor(num / 60);
+  let minutes = num % 60;
+  if (minutes.toString().length < 2) {
+    minutes = `0${minutes}`;
+  }
+  return `${hours}:${minutes}`;
+}
+
+export function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}

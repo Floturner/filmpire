@@ -29,7 +29,7 @@ const blueLogo =
 const redLogo =
   'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
 
-export default function TheSideBar({
+export default function SideBar({
   isDarkMode,
   isMobile,
   isDrawerOpen,
@@ -146,8 +146,18 @@ function GenreList({ isDarkMode, selectedGenre, selectGenre }) {
       </Box>
     );
   } else if (error) {
-    content = <Typography variant="h6">An error has occured.</Typography>;
-  } else if (data.genres.length) {
+    content = (
+      <Typography variant="body1" px={2}>
+        An error has occured.
+      </Typography>
+    );
+  } else if (!data.genres.length) {
+    content = (
+      <Typography variant="body1" px={2}>
+        No genres found.
+      </Typography>
+    );
+  } else {
     content = data.genres.map(({ id, name }) => (
       <MuiLink
         component={Link}
@@ -173,12 +183,6 @@ function GenreList({ isDarkMode, selectedGenre, selectGenre }) {
         </ListItemButton>
       </MuiLink>
     ));
-  } else {
-    content = (
-      <Box display="flex" alignItems="center" marginTop="20px">
-        <Typography variant="h4">No genres found.</Typography>
-      </Box>
-    );
   }
 
   return (

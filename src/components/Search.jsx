@@ -3,9 +3,11 @@ import { InputBase, alpha, styled } from '@mui/material';
 import debounce from 'lodash.debounce';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { searchMovie } from '../features';
 
 export default function Search() {
+  const location = useLocation();
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
 
@@ -16,6 +18,8 @@ export default function Search() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  if (location.pathname !== '/') return null;
 
   function handleChange(event) {
     setQuery(event.target.value);

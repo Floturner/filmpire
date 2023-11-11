@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const TMDB_API_KEY = import.meta.env.VITE_TMDB_KEY;
 export const TMDB_API_BASE_URL = 'https://api.themoviedb.org/3';
-export const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
+export const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 export const tmdbApi = createApi({
   reducerPath: 'tmdbApi',
@@ -12,6 +12,7 @@ export const tmdbApi = createApi({
     getGenres: builder.query({
       query: () => `/genre/movie/list?api_key=${TMDB_API_KEY}`,
     }),
+
     // Get Movies by [type]
     getMovies: builder.query({
       query: ({ genreIdOrCategoryId, page, searchQuery }) => {
@@ -34,7 +35,37 @@ export const tmdbApi = createApi({
         return `/movie/popular?page=${page}&api_key=${TMDB_API_KEY}`;
       },
     }),
+
+    // Get Movie by ID
+    getMovie: builder.query({
+      query: (id) =>
+        `/movie/${id}?append_to_response=videos,credits&api_key=${TMDB_API_KEY}`,
+    }),
+
+    // Get User Specific Lists
+    getRecommendations: builder.query({
+      query: ({ movieId, list }) =>
+        `/movie/${movieId}/${list}?api_key=${TMDB_API_KEY}`,
+    }),
+
+    // Get Actor by ID
+    getActor: builder.query({
+      query: (id) => `/person/${id}?api_key=${TMDB_API_KEY}`,
+    }),
+
+    // Get Movies by Actor ID
+    getMoviesByActorId: builder.query({
+      query: ({ id, page }) =>
+        `/discover/movie?with_cast=${id}&page=${page}&api_key=${TMDB_API_KEY}`,
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useGetGenresQuery } = tmdbApi;
+export const {
+  useGetMoviesQuery,
+  useGetGenresQuery,
+  useGetMovieQuery,
+  useGetRecommendationsQuery,
+  useGetActorQuery,
+  useGetMoviesByActorIdQuery,
+} = tmdbApi;

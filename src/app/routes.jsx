@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
-  ActorsPage,
+  ActorDetailsPage,
+  App,
   ErrorPage,
-  Layout,
   MovieDetailsPage,
   MoviesPage,
   ProfilePage,
@@ -11,7 +11,7 @@ import {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'actors/:id',
-        element: <ActorsPage />,
+        element: <ActorDetailsPage />,
       },
       {
         path: 'profile/:id',

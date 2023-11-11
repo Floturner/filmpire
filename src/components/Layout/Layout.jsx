@@ -1,8 +1,7 @@
 import { Box, Toolbar } from '@mui/material';
-import { Outlet } from 'react-router-dom';
-import { NavBar } from '../components';
+import NavBar from '../NavBar/NavBar';
 
-function Layout() {
+function Layout({ children }) {
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
       <NavBar />
@@ -17,7 +16,7 @@ function Layout() {
         }}
       >
         <Toolbar />
-        <Outlet />
+        {children}
       </Box>
     </Box>
   );

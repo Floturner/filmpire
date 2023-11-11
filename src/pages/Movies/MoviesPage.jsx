@@ -1,48 +1,71 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { MovieList } from '../../components';
+import {
+  CircularLoading,
+  EmptyOrError,
+  MovieList,
+  Pagination,
+} from '../../components';
 import { useGetMoviesQuery } from '../../services';
+import { delay } from '../../utils';
 
 function MoviesPage() {
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
   const { genreIdOrCategoryId, searchQuery } = useSelector(
     (state) => state.currentGenreOrCategory
   );
-  const { data, isFetching, error } = useGetMoviesQuery({
+  const {
+    data: movies,
+    isFetching,
+    error,
+  } = useGetMoviesQuery({
     genreIdOrCategoryId,
     page,
     searchQuery,
   });
 
-  if (isFetching) {
-    return (
-      <Box display="flex" justifyContent="center">
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (!data.results.length) {
-    return (
-      <Box display="flex" alignItems="center" marginTop="20px">
-        <Typography variant="h4">
-          No movies found that match that name.
-          <br />
-          Please search for something else.
-        </Typography>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return <Typography variant="h4">An error has occured.</Typography>;
+  async function paginate(value) {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    await delay(500);
+    setPage(value);
   }
 
   return (
-    <div>
-      <MovieList movies={data} />
-    </div>
+    <>
+      {isFetching && <CircularLoading />}
+      {error ? (
+        <EmptyOrError>
+          Something went wrong. Please try again later.
+        </EmptyOrError>
+      ) : (
+        <div>
+          {movies?.results.length ? (
+            <>
+              <MovieList movies={movies.results} />
+              <Pagination
+                currentPage={page}
+                totalPages={movies.total_pages}
+                setPage={(value) => paginate(value)}
+              />
+            </>
+          ) : (
+            !isFetching && (
+              <EmptyOrError>
+                {searchQuery ? (
+                  <>
+                    No movies found that match that name.
+                    <br />
+                    Please search for something else.
+                  </>
+                ) : (
+                  <>No movies found.</>
+                )}
+              </EmptyOrError>
+            )
+          )}
+        </div>
+      )}
+    </>
   );
 }
 

@@ -1,6 +1,10 @@
+export { default as CircularLoading } from './CircularLoading';
+export { default as EmptyOrError } from './EmptyOrError';
+export { default as Layout } from './Layout/Layout';
 export { default as Movie } from './Movie';
 export { default as MovieList } from './MovieList';
 export { default as AppBar } from './NavBar/AppBar';
 export { default as NavBar } from './NavBar/NavBar';
 export { default as SideBar } from './NavBar/SideBar';
+export { default as Pagination } from './Pagination';
 export { default as Search } from './Search';

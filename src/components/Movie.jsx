@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -12,9 +13,11 @@ import { Link } from 'react-router-dom';
 import { TMDB_IMAGE_BASE_URL } from '../services';
 
 function Movie({ movie, index }) {
+  const numberFormat = new Intl.NumberFormat('en-US');
   const posterImage = movie.poster_path
-    ? `${TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}`
-    : 'http://via.placeholder.com/350';
+    ? `${TMDB_IMAGE_BASE_URL}/${movie.poster_path}`
+    : 'http://via.placeholder.com/500';
+  const voteAverage = Math.round(((movie.vote_average ?? 0) / 2) * 10) / 10;
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
@@ -22,7 +25,7 @@ function Movie({ movie, index }) {
         <Card variant="outlined" sx={{ borderRadius: '8px' }}>
           <CardActionArea
             LinkComponent={Link}
-            to={`movies/${movie.id}`}
+            to={`/movies/${movie.id}`}
             sx={{
               '&:hover .MuiCardMedia-root': {
                 transform: 'scale(1.05)',
@@ -48,7 +51,12 @@ function Movie({ movie, index }) {
               >
                 {movie.title}
               </Typography>
-              <Rating readOnly value={movie.vote_average / 2} precision={0.1} />
+              <Box display="flex" align="center">
+                <Rating readOnly value={voteAverage} precision={0.1} />
+                <Typography variant="subtitle1" gutterBottom ml={1}>
+                  {numberFormat.format(voteAverage)}
+                </Typography>
+              </Box>
             </CardContent>
           </CardActionArea>
         </Card>

@@ -88,7 +88,7 @@ export default function AppBar({
               LinkComponent={Link}
               component={Link}
               color="inherit"
-              to={`profile/${user.id}`}
+              to={`/profile/${user.id}`}
             >
               <Avatar
                 alt="Profile"
