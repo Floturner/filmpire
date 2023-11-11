@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { TMDB_API_BASE_URL, TMDB_API_KEY } from '../services';
 
+export { default as Theme, ThemeContext } from './Theme';
+
 export const moviesApi = axios.create({
   baseURL: TMDB_API_BASE_URL,
   params: {

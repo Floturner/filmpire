@@ -11,7 +11,7 @@ import {
   AppBar as MuiAppBar,
   Toolbar,
 } from '@mui/material';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { authSelector, setUser } from '../../features';
@@ -19,6 +19,7 @@ import { TMDB_IMAGE_BASE_URL } from '../../services';
 import {
   REQUEST_TOKEN_KEY,
   SESSION_ID_KEY,
+  ThemeContext,
   createSessionId,
   fetchToken,
   getUser,
@@ -33,7 +34,7 @@ export default function AppBar({
 }) {
   const { isAuthenticated, user } = useSelector(authSelector);
   const dispatch = useDispatch();
-  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const themeContext = useContext(ThemeContext);
   const localToken = localStorage.getItem(REQUEST_TOKEN_KEY);
   const localSessionId = localStorage.getItem(SESSION_ID_KEY);
 
@@ -82,7 +83,11 @@ export default function AppBar({
             <MenuIcon />
           </IconButton>
         )}
-        <IconButton color="inherit" sx={{ ml: 1 }} onClick={() => {}}>
+        <IconButton
+          color="inherit"
+          sx={{ ml: 1 }}
+          onClick={() => themeContext.toggleColorMode()}
+        >
           {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         {!isMobile && <Search />}

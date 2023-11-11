@@ -7,7 +7,6 @@ const drawerWidth = '240px';
 
 export default function NavBar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
