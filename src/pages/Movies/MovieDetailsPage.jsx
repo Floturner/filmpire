@@ -10,23 +10,30 @@ import {
   TheatersOutlined as TheatersOutlinedIcon,
 } from '@mui/icons-material';
 import { Box, Button, Grid, Modal, Rating, Typography } from '@mui/material';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import genreIcons from '../../assets/genres';
 import { CircularLoading, EmptyOrError, MovieList } from '../../components';
-import { selectGenreOrCategory } from '../../features';
+import { authSelector, selectGenreOrCategory } from '../../features';
 import {
   TMDB_IMAGE_BASE_URL,
+  useGetListQuery,
   useGetMovieQuery,
   useGetRecommendationsQuery,
 } from '../../services';
-import { convertNumberToTime } from '../../utils';
+import {
+  SESSION_ID_KEY,
+  convertNumberToTime,
+  toggleFavoritedMovie,
+  toggleWatchlistedMovie,
+} from '../../utils';
 
 function MovieDetailsPage() {
-  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const { user, isAuthenticated } = useSelector(authSelector);
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
   const {
     data: movie,
@@ -41,13 +48,49 @@ function MovieDetailsPage() {
     movieId: id,
     list: 'recommendations',
   });
+  const sessionId = localStorage.getItem(SESSION_ID_KEY);
+  const { data: favoriteMovies } = useGetListQuery(
+    {
+      listName: 'favorite/movies',
+      accountId: user.id,
+      sessionId,
+      page: 1,
+    },
+    { skip: !isAuthenticated }
+  );
+  const { data: watchlistMovies } = useGetListQuery(
+    {
+      listName: 'watchlist/movies',
+      accountId: user.id,
+      sessionId,
+      page: 1,
+    },
+    { skip: !isAuthenticated }
+  );
+  const [isMovieFavorited, setIsMovieFavorited] = useState(false);
+  const [isMovieWatchlisted, setIsMovieWatchlisted] = useState(false);
 
-  const isMovieFavorited = false;
-  const isMovieWatchListed = true;
+  useEffect(() => {
+    setIsMovieFavorited(
+      favoriteMovies?.results?.find((fav) => fav?.id === movie?.id)
+    );
+  }, [favoriteMovies, movie]);
 
-  function addToFavorites() {}
+  useEffect(() => {
+    setIsMovieWatchlisted(
+      watchlistMovies?.results?.find((watch) => watch?.id === movie?.id)
+    );
+  }, [watchlistMovies, movie]);
 
-  function addToWatchList() {}
+  async function toggleFavorited() {
+    await toggleFavoritedMovie(user.id, sessionId, id, isMovieFavorited);
+    setIsMovieFavorited((favorited) => !favorited);
+  }
+
+  async function toggleWatchlisted() {
+    await toggleWatchlistedMovie(user.id, sessionId, id, isMovieWatchlisted);
+    setIsMovieWatchlisted((watchlisted) => !watchlisted);
+  }
 
   if (isMovieFetching) {
     return <CircularLoading />;
@@ -125,6 +168,7 @@ function MovieDetailsPage() {
       </Grid>
       {/* Details */}
       <Grid item container direction="column" xs={12} lg={8}>
+        {/* Title */}
         {movie.title && movie.release_date && (
           <Typography
             sx={{ typography: { xs: 'h4', lg: 'h3' } }}
@@ -134,7 +178,7 @@ function MovieDetailsPage() {
             {`${movie.title} (${movie.release_date.split('-')[0]})`}
           </Typography>
         )}
-
+        {/* Tagline */}
         {movie.tagline && (
           <Typography
             variant="h5"
@@ -145,7 +189,7 @@ function MovieDetailsPage() {
             {movie.tagline}
           </Typography>
         )}
-
+        {/* Votes */}
         <Grid item sx={{ display: 'flex', justifyContent: 'center' }}>
           <Box display="flex" align="center">
             <Typography variant="subtitle1" gutterBottom mr={1}>
@@ -157,7 +201,7 @@ function MovieDetailsPage() {
             </Typography>
           </Box>
         </Grid>
-
+        {/* Runtime & Languages */}
         <Grid item sx={{ display: 'flex', justifyContent: 'center' }}>
           <Box display="flex" align="center">
             <AccessTimeOutlinedIcon
@@ -181,7 +225,7 @@ function MovieDetailsPage() {
             )}
           </Box>
         </Grid>
-
+        {/* Genres */}
         {movie.genres?.length && (
           <Grid
             item
@@ -217,7 +261,7 @@ function MovieDetailsPage() {
             ))}
           </Grid>
         )}
-
+        {/* Overview */}
         {movie.overview && (
           <Box>
             <Typography variant="h5" sx={{ mt: 2 }} gutterBottom>
@@ -228,7 +272,7 @@ function MovieDetailsPage() {
             </Typography>
           </Box>
         )}
-
+        {/* Actors */}
         {cast.length && (
           <>
             <Typography variant="h5" sx={{ mt: 1, mb: 2 }} gutterBottom>
@@ -274,7 +318,7 @@ function MovieDetailsPage() {
             </Grid>
           </>
         )}
-
+        {/* Action Buttons */}
         <Grid
           item
           container
@@ -322,38 +366,42 @@ function MovieDetailsPage() {
               Trailer
             </Button>
           </Grid>
-          <Grid item>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={
-                isMovieFavorited ? (
-                  <FavoriteBorderOutlinedIcon />
-                ) : (
-                  <FavoriteOutlinedIcon />
-                )
-              }
-              onClick={() => addToFavorites()}
-            >
-              {isMovieFavorited ? 'Unfavorite' : 'Favorite'}
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={
-                isMovieWatchListed ? (
-                  <PlaylistRemoveOutlinedIcon />
-                ) : (
-                  <PlaylistAddOutlinedIcon />
-                )
-              }
-              onClick={() => addToWatchList()}
-            >
-              Watchlist
-            </Button>
-          </Grid>
+          {isAuthenticated && (
+            <Grid item>
+              <Button
+                size="small"
+                variant="outlined"
+                startIcon={
+                  isMovieFavorited ? (
+                    <FavoriteBorderOutlinedIcon />
+                  ) : (
+                    <FavoriteOutlinedIcon />
+                  )
+                }
+                onClick={() => toggleFavorited()}
+              >
+                {isMovieFavorited ? 'Unfavorite' : 'Favorite'}
+              </Button>
+            </Grid>
+          )}
+          {isAuthenticated && (
+            <Grid item>
+              <Button
+                size="small"
+                variant="outlined"
+                startIcon={
+                  isMovieWatchlisted ? (
+                    <PlaylistRemoveOutlinedIcon />
+                  ) : (
+                    <PlaylistAddOutlinedIcon />
+                  )
+                }
+                onClick={() => toggleWatchlisted()}
+              >
+                Watchlist
+              </Button>
+            </Grid>
+          )}
           <Grid item>
             <Button
               size="small"

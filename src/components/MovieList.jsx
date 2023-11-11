@@ -5,8 +5,7 @@ function MovieList({ movies, count }) {
   return (
     <Grid
       container
-      spacing="30px"
-      width="100%"
+      spacing={3}
       sx={{
         display: 'flex',
         flexWrap: 'wrap',

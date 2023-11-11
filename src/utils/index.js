@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { TMDB_API_BASE_URL, TMDB_API_KEY } from '../services';
 
-const moviesApi = axios.create({
+export const moviesApi = axios.create({
   baseURL: TMDB_API_BASE_URL,
   params: {
     api_key: TMDB_API_KEY,
@@ -55,6 +55,50 @@ export async function getUser(sessionId) {
   }
 }
 
+export async function toggleFavoritedMovie(
+  userId,
+  sessionId,
+  movieId,
+  isFavorite
+) {
+  try {
+    await moviesApi.post(
+      `/account/${userId}/favorite?session_id=${sessionId}`,
+      {
+        media_type: 'movie',
+        media_id: movieId,
+        favorite: !isFavorite,
+      }
+    );
+  } catch (err) {
+    throw new Error(
+      `Unable to ${isFavorite ? 'unfavorite' : 'favorite'} this movie.`
+    );
+  }
+}
+
+export async function toggleWatchlistedMovie(
+  userId,
+  sessionId,
+  movieId,
+  isWatchlisted
+) {
+  try {
+    await moviesApi.post(
+      `/account/${userId}/watchlist?session_id=${sessionId}`,
+      {
+        media_type: 'movie',
+        media_id: movieId,
+        watchlist: !isWatchlisted,
+      }
+    );
+  } catch (err) {
+    throw new Error(
+      `Unable to ${isWatchlisted ? 'remove' : 'add'} this movie to watchlist.`
+    );
+  }
+}
+
 export function convertNumberToTime(num) {
   const hours = Math.floor(num / 60);
   let minutes = num % 60;
@@ -62,10 +106,4 @@ export function convertNumberToTime(num) {
     minutes = `0${minutes}`;
   }
   return `${hours}:${minutes}`;
-}
-
-export function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
 }

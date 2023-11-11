@@ -16,7 +16,6 @@ import {
   useGetActorQuery,
   useGetMoviesByActorIdQuery,
 } from '../../services';
-import { delay } from '../../utils';
 
 function ActorDetailsPage() {
   const { id } = useParams();
@@ -34,9 +33,8 @@ function ActorDetailsPage() {
   } = useGetMoviesByActorIdQuery({ id, page });
   const moviesWrapperRef = useRef(null);
 
-  async function paginate(value) {
+  function paginate(value) {
     moviesWrapperRef.current?.scrollIntoView({ behavior: 'smooth' });
-    await delay(500);
     setPage(value);
   }
 

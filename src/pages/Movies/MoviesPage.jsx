@@ -7,7 +7,6 @@ import {
   Pagination,
 } from '../../components';
 import { useGetMoviesQuery } from '../../services';
-import { delay } from '../../utils';
 
 function MoviesPage() {
   const [page, setPage] = useState(1);
@@ -24,9 +23,8 @@ function MoviesPage() {
     searchQuery,
   });
 
-  async function paginate(value) {
+  function paginate(value) {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    await delay(500);
     setPage(value);
   }
 

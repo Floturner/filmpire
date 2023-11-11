@@ -1,7 +1,7 @@
 import { Box, Pagination as MuiPagination } from '@mui/material';
 
 function Pagination({ currentPage = 1, totalPages = 0, setPage }) {
-  if (totalPages === 0) return null;
+  if (totalPages <= 1) return null;
 
   return (
     <Box display="flex" justifyContent="center" mt={4}>
