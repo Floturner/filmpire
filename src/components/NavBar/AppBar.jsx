@@ -39,7 +39,7 @@ export default function AppBar({
   const localSessionId = localStorage.getItem(SESSION_ID_KEY);
 
   const avatar = user?.avatar?.tmdb.avatar_path
-    ? `${TMDB_IMAGE_BASE_URL}/${user?.avatar?.tmdb.avatar_path}`
+    ? `${TMDB_IMAGE_BASE_URL}/w64_and_h64_face${user?.avatar?.tmdb.avatar_path}`
     : 'undefined';
 
   useEffect(

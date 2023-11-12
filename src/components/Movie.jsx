@@ -15,7 +15,7 @@ import { TMDB_IMAGE_BASE_URL } from '../services';
 function Movie({ movie, index }) {
   const numberFormat = new Intl.NumberFormat('en-US');
   const posterImage = movie.poster_path
-    ? `${TMDB_IMAGE_BASE_URL}/${movie.poster_path}`
+    ? `${TMDB_IMAGE_BASE_URL}/w500${movie.poster_path}`
     : 'http://via.placeholder.com/500';
   const voteAverage = Math.round(((movie.vote_average ?? 0) / 2) * 10) / 10;
 

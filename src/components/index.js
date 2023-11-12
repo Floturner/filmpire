@@ -1,5 +1,6 @@
 export { default as CircularLoading } from './CircularLoading';
 export { default as EmptyOrError } from './EmptyOrError';
+export { default as FeatureMovie } from './FeatureMovie';
 export { default as Layout } from './Layout/Layout';
 export { default as Movie } from './Movie';
 export { default as MovieList } from './MovieList';

@@ -12,6 +12,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import genreIcons from '../../assets/genres';
@@ -40,6 +41,14 @@ export default function SideBar({
     (state) => state.currentGenreOrCategory
   );
   const dispatch = useDispatch();
+
+  useEffect(
+    () => {
+      toggleDrawer(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [genreIdOrCategoryId]
+  );
 
   return (
     <Box
@@ -88,13 +97,11 @@ export default function SideBar({
         <Divider />
         <CategoryList
           isDarkMode={isDarkMode}
-          selectedCategory={genreIdOrCategoryId}
           selectCategory={(value) => dispatch(selectGenreOrCategory(value))}
         />
         <Divider />
         <GenreList
           isDarkMode={isDarkMode}
-          selectedGenre={genreIdOrCategoryId}
           selectGenre={(value) => dispatch(selectGenreOrCategory(value))}
         />
       </Drawer>
@@ -102,7 +109,7 @@ export default function SideBar({
   );
 }
 
-function CategoryList({ isDarkMode, selectedCategory, selectCategory }) {
+function CategoryList({ isDarkMode, selectCategory }) {
   return (
     <List aria-labelledby="categories-title">
       <ListSubheader id="categories-title">Categories</ListSubheader>
@@ -113,10 +120,7 @@ function CategoryList({ isDarkMode, selectedCategory, selectCategory }) {
           to="/"
           sx={{ color: 'text.primary', textDecoration: 'none' }}
         >
-          <ListItemButton
-            selected={selectedCategory === id}
-            onClick={() => selectCategory(id)}
-          >
+          <ListItemButton onClick={() => selectCategory(id)}>
             <ListItemIcon>
               <Box
                 component="img"
@@ -135,7 +139,7 @@ function CategoryList({ isDarkMode, selectedCategory, selectCategory }) {
   );
 }
 
-function GenreList({ isDarkMode, selectedGenre, selectGenre }) {
+function GenreList({ isDarkMode, selectGenre }) {
   const { data, isFetching, error } = useGetGenresQuery();
 
   let content;
@@ -151,7 +155,7 @@ function GenreList({ isDarkMode, selectedGenre, selectGenre }) {
         An error has occured.
       </Typography>
     );
-  } else if (!data.genres.length) {
+  } else if (!data.genres?.length) {
     content = (
       <Typography variant="body1" px={2}>
         No genres found.
@@ -165,10 +169,7 @@ function GenreList({ isDarkMode, selectedGenre, selectGenre }) {
         to="/"
         sx={{ color: 'text.primary', textDecoration: 'none' }}
       >
-        <ListItemButton
-          selected={selectedGenre === id}
-          onClick={() => selectGenre(id)}
-        >
+        <ListItemButton onClick={() => selectGenre(id)}>
           <ListItemIcon>
             <Box
               component="img"

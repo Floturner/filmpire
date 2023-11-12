@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import {
   CircularLoading,
   EmptyOrError,
+  FeatureMovie,
   MovieList,
   Pagination,
 } from '../../components';
@@ -39,7 +40,8 @@ function MoviesPage() {
         <div>
           {movies?.results.length ? (
             <>
-              <MovieList movies={movies.results} />
+              <FeatureMovie movie={movies.results[0]} />
+              <MovieList movies={movies.results} excludeFirst />
               <Pagination
                 currentPage={page}
                 totalPages={movies.total_pages}

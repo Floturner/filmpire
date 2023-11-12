@@ -113,7 +113,7 @@ function MovieDetailsPage() {
   }
 
   const posterImage = movie.poster_path
-    ? `${TMDB_IMAGE_BASE_URL}/${movie.poster_path}`
+    ? `${TMDB_IMAGE_BASE_URL}/w500${movie.poster_path}`
     : 'http://via.placeholder.com/500';
   const numberFormat = new Intl.NumberFormat('en-US');
   const voteAverage = Math.round(((movie.vote_average ?? 0) / 2) * 10) / 10;
@@ -153,11 +153,15 @@ function MovieDetailsPage() {
           src={posterImage}
           sx={(theme) => ({
             borderRadius: '20px',
-            boxShadow: '0.5em 1em 1em gray',
+            boxShadow: `0.5em 1em 1em ${
+              theme.palette.mode === 'light' ? 'gray' : '#212121'
+            }`,
             width: '80%',
             [theme.breakpoints.down('sm')]: {
               width: '100%',
-              boxShadow: '0.5em 0.5em 1em gray',
+              boxShadow: `0.5em 0.5em 1em ${
+                theme.palette.mode === 'light' ? 'gray' : '#212121'
+              }`,
             },
             [theme.breakpoints.down('md')]: {
               width: '60%',
@@ -294,7 +298,7 @@ function MovieDetailsPage() {
                   >
                     <Box
                       component="img"
-                      src={`${TMDB_IMAGE_BASE_URL}/${character.profile_path}`}
+                      src={`${TMDB_IMAGE_BASE_URL}/w500${character.profile_path}`}
                       alt={character.name}
                       sx={{
                         width: '100%',

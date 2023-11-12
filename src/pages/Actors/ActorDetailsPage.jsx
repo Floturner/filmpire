@@ -59,7 +59,7 @@ function ActorDetailsPage() {
   }
 
   const profileImage = actor.profile_path
-    ? `${TMDB_IMAGE_BASE_URL}/${actor.profile_path}`
+    ? `${TMDB_IMAGE_BASE_URL}/w500${actor.profile_path}`
     : 'http://via.placeholder.com/500';
 
   return (
@@ -92,11 +92,15 @@ function ActorDetailsPage() {
           src={profileImage}
           sx={(theme) => ({
             borderRadius: '20px',
-            boxShadow: '0.5em 1em 1em gray',
+            boxShadow: `0.5em 1em 1em ${
+              theme.palette.mode === 'light' ? 'gray' : '#212121'
+            }`,
             width: '80%',
             [theme.breakpoints.down('sm')]: {
               width: '100%',
-              boxShadow: '0.5em 0.5em 1em gray',
+              boxShadow: `0.5em 0.5em 1em ${
+                theme.palette.mode === 'light' ? 'gray' : '#212121'
+              }`,
             },
             [theme.breakpoints.down('md')]: {
               width: '60%',

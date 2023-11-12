@@ -1,8 +1,8 @@
 import { Search as SearchIcon } from '@mui/icons-material';
 import { InputBase, alpha, styled } from '@mui/material';
 import debounce from 'lodash.debounce';
-import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { searchMovie } from '../features';
 
@@ -10,16 +10,29 @@ export default function Search() {
   const location = useLocation();
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
+  const { genreIdOrCategoryId } = useSelector(
+    (state) => state.currentGenreOrCategory
+  );
 
   const request = debounce((q) => dispatch(searchMovie(q)), 1000);
-
   const debounceRequest = useCallback(
     (searchTerm) => request(searchTerm),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  if (location.pathname !== '/') return null;
+  useEffect(
+    () => {
+      setQuery('');
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [genreIdOrCategoryId]
+  );
+
+  if (location.pathname !== '/') {
+    if (query) setQuery('');
+    return null;
+  }
 
   function handleChange(event) {
     setQuery(event.target.value);
@@ -72,7 +85,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`, // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
