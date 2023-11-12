@@ -6,7 +6,7 @@ This application includes user authentication, dark mode, sort movie on the basi
 
 ## Demo
 
-<https://styled-filmpire.netlify.app/>
+<https://styled-filmpire.netlify.app>
 
 ## Get started locally
 
