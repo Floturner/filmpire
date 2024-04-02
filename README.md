@@ -1,8 +1,6 @@
 # Filmpire
 
-Filmpire combines the desire to unleash powerful creativity with the industry's most advanced JavaScript tools including React.js, Redux, Material UI, and more.
-
-This application includes user authentication, dark mode, sort movie on the basis of categories or genres, viewing movie and actor details, adding a movie to favorites or watchlist and many more functionalities.
+Filmpire is a web-based movie discovery application that allows users to search for movies, sort them by category or genre, view their details and those of their actors, add them to their favorites or watchlist, and much more.
 
 ## Demo
 
